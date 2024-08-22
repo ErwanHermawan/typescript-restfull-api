@@ -1,7 +1,7 @@
 // -- core
 import { Request, Response, NextFunction } from "express";
 
-// -- database
+// -- database event
 import { prismaClient } from "../application/database";
 
 // -- request

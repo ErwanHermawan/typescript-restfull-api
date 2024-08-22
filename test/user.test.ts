@@ -2,8 +2,10 @@
 import supertest from "supertest";
 import { web } from "../src/application/web";
 import { logger } from "../src/application/logging";
-import { UserTest } from "./test-util";
 import bcrypt from "bcrypt";
+
+// -- util
+import { UserTest } from "./test-util";
 
 // testing user registration
 describe("POST /api/users", () => {

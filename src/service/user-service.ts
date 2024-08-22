@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
-// -- database
+// -- database event
 import { prismaClient } from "../application/database";
 
 // -- error response

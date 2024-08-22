@@ -1,6 +1,11 @@
+// -- core
 import express from "express";
-import { publicRouter } from "../route/public-api";
+
+// -- middleware
 import { errorMiddleware } from "../middleware/error-middleware";
+
+// -- router
+import { publicRouter } from "../route/public-api";
 import { apiRouter } from "../route/api";
 
 export const web = express();
