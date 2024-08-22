@@ -109,3 +109,27 @@ describe("GET /api/users/current", () => {
 		expect(response.body.errors).toBeDefined();
 	});
 });
+
+describe("PATCH /api/user/current", () => {
+	beforeEach(async () => {
+		await UserTest.create();
+	});
+
+	afterEach(async () => {
+		await UserTest.delete();
+	});
+
+	it("should reject update user if user request is ivalid", async () => {
+		const response = await supertest(web)
+			.patch("/api/users/current")
+			.set("X-API-TOKEN", "test")
+			.send({
+				password: "",
+				name: "",
+			});
+
+		logger.debug(response.body);
+		expect(response.status).toBe(400);
+		expect(response.body.errors).toBeDefined();
+	});
+});
