@@ -1,9 +1,11 @@
+// -- core
 import supertest from "supertest";
 import { web } from "../src/application/web";
 import { logger } from "../src/application/logging";
 import { UserTest } from "./test-util";
 import bcrypt from "bcrypt";
 
+// testing user registration
 describe("POST /api/users", () => {
 	afterEach(async () => {
 		await UserTest.delete();
@@ -35,6 +37,7 @@ describe("POST /api/users", () => {
 	});
 });
 
+// testing user login
 describe("POST /api/users/login", () => {
 	beforeEach(async () => {
 		await UserTest.create();
@@ -80,6 +83,7 @@ describe("POST /api/users/login", () => {
 	});
 });
 
+// testing user get data
 describe("GET /api/users/current", () => {
 	beforeEach(async () => {
 		await UserTest.create();
@@ -111,6 +115,7 @@ describe("GET /api/users/current", () => {
 	});
 });
 
+// testing user update data
 describe("PATCH /api/user/current", () => {
 	beforeEach(async () => {
 		await UserTest.create();
@@ -177,6 +182,7 @@ describe("PATCH /api/user/current", () => {
 	});
 });
 
+// testing user logout
 describe("DELETE /api/users/current", () => {
 	beforeEach(async () => {
 		await UserTest.create();

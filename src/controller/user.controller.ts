@@ -1,14 +1,21 @@
+// -- core
 import { Request, Response, NextFunction } from "express";
+
+// -- model
 import {
 	CreateUserRequest,
 	LoginUserRequest,
 	UpdateUserRequest,
 } from "../model/user-model";
+
+// -- service
 import { UserService } from "../service/user-service";
+
+// -- request
 import { UserRequest } from "../type/user-request";
 
 export class UserController {
-	// register user
+	// register user controller
 	static async resgister(req: Request, res: Response, next: NextFunction) {
 		try {
 			const request: CreateUserRequest = req.body as CreateUserRequest;
@@ -22,7 +29,7 @@ export class UserController {
 		}
 	}
 
-	// login user
+	// login user controller
 	static async login(req: Request, res: Response, next: NextFunction) {
 		try {
 			const request: LoginUserRequest = req.body as LoginUserRequest;
@@ -36,7 +43,7 @@ export class UserController {
 		}
 	}
 
-	// get user
+	// get user controller
 	static async get(req: UserRequest, res: Response, next: NextFunction) {
 		try {
 			const response = await UserService.get(req.user!);
@@ -49,7 +56,7 @@ export class UserController {
 		}
 	}
 
-	// update user
+	// update user controller
 	static async update(req: UserRequest, res: Response, next: NextFunction) {
 		try {
 			const request: UpdateUserRequest = req.body as UpdateUserRequest;
@@ -63,7 +70,7 @@ export class UserController {
 		}
 	}
 
-	//  logout user
+	//  logout user controller
 	static async logout(req: UserRequest, res: Response, next: NextFunction) {
 		try {
 			await UserService.logout(req.user!);

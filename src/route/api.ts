@@ -1,5 +1,10 @@
+// -- core
 import express from "express";
+
+// -- middleware
 import { authMiddleware } from "../middleware/auth-middleware";
+
+// -- controllers
 import { UserController } from "../controller/user.controller";
 
 export const apiRouter = express.Router();
