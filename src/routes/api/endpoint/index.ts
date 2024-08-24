@@ -9,4 +9,5 @@ export const ENDPOINT = {
 
 	// endpoint private
 	USER: `${BASE_URL}users/current`,
+	CONTACTS: `${BASE_URL}contacts`,
 };

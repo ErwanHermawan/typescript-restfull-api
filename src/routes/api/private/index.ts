@@ -6,6 +6,7 @@ import { authMiddleware } from "@middleware/auth";
 
 // -- controllers
 import { UserController } from "@controllers/user";
+import { ContactController } from "@controllers/contact";
 
 // -- endpoint
 import { ENDPOINT } from "@api/endpoint";
@@ -17,3 +18,6 @@ apiRouter.use(authMiddleware);
 apiRouter.get(ENDPOINT.USER, UserController.get);
 apiRouter.patch(ENDPOINT.USER, UserController.update);
 apiRouter.delete(ENDPOINT.USER, UserController.logout);
+
+// Contact API
+apiRouter.post(ENDPOINT.CONTACTS, ContactController.create);

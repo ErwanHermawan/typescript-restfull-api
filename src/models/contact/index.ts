@@ -1,5 +1,6 @@
 import { Contact } from "@prisma/client";
 
+// contact response
 export type ContactResponse = {
 	id: number;
 	first_name: string;
@@ -8,6 +9,7 @@ export type ContactResponse = {
 	phone?: string | null;
 };
 
+// create contact request
 export type CreateContactRequest = {
 	id: number;
 	first_name: string;
@@ -16,10 +18,11 @@ export type CreateContactRequest = {
 	phone?: string;
 };
 
+// conversion contact prisma to contact response
 export function toConcatResponse(contact: Contact): ContactResponse {
 	return {
 		id: contact.id,
-		first_name: contact.firt_name,
+		first_name: contact.first_name,
 		last_name: contact.last_name,
 		email: contact.email,
 		phone: contact.phone,

@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 // -- database
 import { prismaClient } from "@application/database";
 
+// utis user test
 export class UserTest {
 	static async delete() {
 		await prismaClient.user.deleteMany({
@@ -37,5 +38,16 @@ export class UserTest {
 		}
 
 		return user;
+	}
+}
+
+// util contact test
+export class ContactTest {
+	static async deleteAll() {
+		await prismaClient.contact.deleteMany({
+			where: {
+				username: "test",
+			},
+		});
 	}
 }
