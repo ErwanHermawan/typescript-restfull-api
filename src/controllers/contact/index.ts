@@ -11,10 +11,25 @@ import { CreateContactRequest } from "@models/contact";
 import { ContactServive } from "@services/contact";
 
 export class ContactController {
+	// controller create contact
 	static async create(req: UserRequest, res: Response, next: NextFunction) {
 		try {
 			const request: CreateContactRequest = req.body;
 			const response = await ContactServive.create(req.user!, request);
+
+			res.status(200).json({
+				data: response,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	// controller get contact
+	static async get(req: UserRequest, res: Response, next: NextFunction) {
+		try {
+			const contactId = Number(req.params.contactId);
+			const response = await ContactServive.get(req.user!, contactId);
 
 			res.status(200).json({
 				data: response,
