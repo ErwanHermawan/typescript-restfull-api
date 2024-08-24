@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 // -- database
-import { prismaClient } from "../src/application/database";
+import { prismaClient } from "@application/database";
 
 export class UserTest {
 	static async delete() {

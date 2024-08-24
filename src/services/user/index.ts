@@ -4,10 +4,10 @@ import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
 // -- database event
-import { prismaClient } from "../application/database";
+import { prismaClient } from "@application/database";
 
 // -- error response
-import { ResponseError } from "../error/response-error";
+import { ResponseError } from "@errors/response";
 
 // -- models
 import {
@@ -16,11 +16,11 @@ import {
 	toUserResponse,
 	UpdateUserRequest,
 	UserResponse,
-} from "../model/user-model";
+} from "@models/user";
 
-// -- validation
-import { UserValidation } from "../validation/user-validation";
-import { Validation } from "../validation/validation";
+// -- validations
+import { UserValidation } from "@validations/user";
+import { Validation } from "@validations/index";
 
 export class UserService {
 	// service user register

@@ -1,20 +1,25 @@
 // -- core
 import supertest from "supertest";
-import { web } from "../src/application/web";
-import { logger } from "../src/application/logging";
 import bcrypt from "bcrypt";
 
-// -- util
+// -- application
+import { web } from "@application/web";
+import { logger } from "@application/logging";
+
+// -- utils
 import { UserTest } from "./test-util";
 
+// -- endpoint
+import { ENDPOINT } from "@routes/api/endpoint";
+
 // testing user registration
-describe("POST /api/users", () => {
+describe(`POST ${ENDPOINT.PUBLIC.USER}`, () => {
 	afterEach(async () => {
 		await UserTest.delete();
 	});
 
 	it("should reject register new user if request is invalid", async () => {
-		const response = await supertest(web).post("/api/users").send({
+		const response = await supertest(web).post(`${ENDPOINT.PUBLIC.USER}`).send({
 			username: "",
 			password: "",
 			name: "",
@@ -26,7 +31,7 @@ describe("POST /api/users", () => {
 	});
 
 	it("should register new user", async () => {
-		const response = await supertest(web).post("/api/users").send({
+		const response = await supertest(web).post(`${ENDPOINT.PUBLIC.USER}`).send({
 			username: "test",
 			password: "test",
 			name: "test",
@@ -40,7 +45,7 @@ describe("POST /api/users", () => {
 });
 
 // testing user login
-describe("POST /api/users/login", () => {
+describe(`POST ${ENDPOINT.PUBLIC.LOGIN}`, () => {
 	beforeEach(async () => {
 		await UserTest.create();
 	});
@@ -50,10 +55,12 @@ describe("POST /api/users/login", () => {
 	});
 
 	it("should be able to login", async () => {
-		const response = await supertest(web).post("/api/users/login").send({
-			username: "test",
-			password: "test",
-		});
+		const response = await supertest(web)
+			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
+			.send({
+				username: "test",
+				password: "test",
+			});
 
 		logger.debug(response.body);
 		expect(response.status).toBe(200);
@@ -63,10 +70,12 @@ describe("POST /api/users/login", () => {
 	});
 
 	it("should reject login user if username is wrong", async () => {
-		const response = await supertest(web).post("/api/users/login").send({
-			username: "salah",
-			password: "test",
-		});
+		const response = await supertest(web)
+			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
+			.send({
+				username: "wrong",
+				password: "test",
+			});
 
 		logger.debug(response.body);
 		expect(response.status).toBe(401);
@@ -74,10 +83,12 @@ describe("POST /api/users/login", () => {
 	});
 
 	it("should reject login user if username is wrong", async () => {
-		const response = await supertest(web).post("/api/users/login").send({
-			username: "test",
-			password: "salah",
-		});
+		const response = await supertest(web)
+			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
+			.send({
+				username: "test",
+				password: "wrong",
+			});
 
 		logger.debug(response.body);
 		expect(response.status).toBe(401);
@@ -86,7 +97,7 @@ describe("POST /api/users/login", () => {
 });
 
 // testing user get data
-describe("GET /api/users/current", () => {
+describe(`GET ${ENDPOINT.USER}`, () => {
 	beforeEach(async () => {
 		await UserTest.create();
 	});
@@ -97,7 +108,7 @@ describe("GET /api/users/current", () => {
 
 	it("should be able to get user", async () => {
 		const response = await supertest(web)
-			.get("/api/users/current")
+			.get(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test");
 
 		logger.debug(response.body);
@@ -108,7 +119,7 @@ describe("GET /api/users/current", () => {
 
 	it("should reject get user if token is invalid", async () => {
 		const response = await supertest(web)
-			.get("/api/users/current")
+			.get(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong");
 
 		logger.debug(response.body);
@@ -118,7 +129,7 @@ describe("GET /api/users/current", () => {
 });
 
 // testing user update data
-describe("PATCH /api/user/current", () => {
+describe(`PATCH ${ENDPOINT.USER}`, () => {
 	beforeEach(async () => {
 		await UserTest.create();
 	});
@@ -129,7 +140,7 @@ describe("PATCH /api/user/current", () => {
 
 	it("should reject update user if user request is ivalid", async () => {
 		const response = await supertest(web)
-			.patch("/api/users/current")
+			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
 				password: "",
@@ -143,7 +154,7 @@ describe("PATCH /api/user/current", () => {
 
 	it("should reject update user if token is wrong", async () => {
 		const response = await supertest(web)
-			.patch("/api/users/current")
+			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong")
 			.send({
 				password: "true",
@@ -157,7 +168,7 @@ describe("PATCH /api/user/current", () => {
 
 	it("should be able to update username", async () => {
 		const response = await supertest(web)
-			.patch("/api/users/current")
+			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
 				name: "true",
@@ -170,7 +181,7 @@ describe("PATCH /api/user/current", () => {
 
 	it("should be able to update password", async () => {
 		const response = await supertest(web)
-			.patch("/api/users/current")
+			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
 				password: "true",
@@ -185,7 +196,7 @@ describe("PATCH /api/user/current", () => {
 });
 
 // testing user logout
-describe("DELETE /api/users/current", () => {
+describe(`DELETE ${ENDPOINT.USER}`, () => {
 	beforeEach(async () => {
 		await UserTest.create();
 	});
@@ -196,7 +207,7 @@ describe("DELETE /api/users/current", () => {
 
 	it("should to be able logout", async () => {
 		const response = await supertest(web)
-			.delete("/api/users/current")
+			.delete(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test");
 
 		logger.debug(response.body);
@@ -209,7 +220,7 @@ describe("DELETE /api/users/current", () => {
 
 	it("should reject logout user if token is wrong", async () => {
 		const response = await supertest(web)
-			.delete("/api/users/current")
+			.delete(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong");
 
 		logger.debug(response.body);

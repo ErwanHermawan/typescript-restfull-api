@@ -2,10 +2,10 @@
 import { Request, Response, NextFunction } from "express";
 
 // -- database event
-import { prismaClient } from "../application/database";
+import { prismaClient } from "@application/database";
 
 // -- request
-import { UserRequest } from "../type/user-request";
+import { UserRequest } from "@type/user";
 
 export const authMiddleware = async (
 	req: UserRequest,

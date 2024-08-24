@@ -1,18 +1,18 @@
-// -- core
+// -- cores
 import { Request, Response, NextFunction } from "express";
 
-// -- model
+// -- models
 import {
 	CreateUserRequest,
 	LoginUserRequest,
 	UpdateUserRequest,
-} from "../model/user-model";
+} from "@models/user";
 
-// -- service
-import { UserService } from "../service/user-service";
+// -- services
+import { UserService } from "@services/user";
 
 // -- request
-import { UserRequest } from "../type/user-request";
+import { UserRequest } from "@type/user";
 
 export class UserController {
 	// register user controller
