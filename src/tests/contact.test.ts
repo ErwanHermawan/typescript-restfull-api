@@ -3,7 +3,7 @@ import supertest from "supertest";
 import { logObjectData } from "@application/logging";
 
 // -- application
-import { web } from "@application/web";
+import { app } from "@application/index";
 import { logger } from "@application/logging";
 
 // -- utils
@@ -11,7 +11,6 @@ import { UserTest, ContactTest } from "./test-util";
 
 // -- endpoint
 import { ENDPOINT } from "@routes/api/endpoint";
-import { response } from "express";
 
 // testing create contact
 describe(`POST ${ENDPOINT.CONTACTS}`, () => {
@@ -25,7 +24,7 @@ describe(`POST ${ENDPOINT.CONTACTS}`, () => {
 	});
 
 	it("should create new contact", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.post(ENDPOINT.CONTACTS)
 			.set("X-API-TOKEN", "test")
 			.send({
@@ -45,7 +44,7 @@ describe(`POST ${ENDPOINT.CONTACTS}`, () => {
 	});
 
 	it("should reject create new contact if data is invalid", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.post(ENDPOINT.CONTACTS)
 			.set("X-API-TOKEN", "test")
 			.send({
@@ -75,7 +74,7 @@ describe(`GET ${ENDPOINT.CONTACTS}/:contactId`, () => {
 
 	it("shoult be able get contact", async () => {
 		const contact = await ContactTest.get();
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.get(`${ENDPOINT.CONTACTS}/${contact.id}`)
 			.set("X-API-TOKEN", "test");
 
@@ -90,7 +89,7 @@ describe(`GET ${ENDPOINT.CONTACTS}/:contactId`, () => {
 
 	it("shoult be reject get contact if contact is not found", async () => {
 		const contact = await ContactTest.get();
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.get(`${ENDPOINT.CONTACTS}/${contact.id + 1}`)
 			.set("X-API-TOKEN", "test");
 

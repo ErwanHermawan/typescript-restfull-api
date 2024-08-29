@@ -8,8 +8,8 @@ import { errorMiddleware } from "@middleware/error";
 import { publicRouter } from "@routes/api/public";
 import { apiRouter } from "@routes/api/private";
 
-export const web = express();
-web.use(express.json());
-web.use(publicRouter);
-web.use(apiRouter);
-web.use(errorMiddleware);
+export const app = express();
+app.use(express.json());
+app.use(publicRouter);
+app.use(apiRouter);
+app.use(errorMiddleware);

@@ -3,7 +3,7 @@ import supertest from "supertest";
 import bcrypt from "bcrypt";
 
 // -- application
-import { web } from "@application/web";
+import { app } from "@application/index";
 import { logger } from "@application/logging";
 
 // -- utils
@@ -19,7 +19,7 @@ describe(`POST ${ENDPOINT.PUBLIC.USER}`, () => {
 	});
 
 	it("should reject register new user if request is invalid", async () => {
-		const response = await supertest(web).post(`${ENDPOINT.PUBLIC.USER}`).send({
+		const response = await supertest(app).post(`${ENDPOINT.PUBLIC.USER}`).send({
 			username: "",
 			password: "",
 			name: "",
@@ -31,7 +31,7 @@ describe(`POST ${ENDPOINT.PUBLIC.USER}`, () => {
 	});
 
 	it("should register new user", async () => {
-		const response = await supertest(web).post(`${ENDPOINT.PUBLIC.USER}`).send({
+		const response = await supertest(app).post(`${ENDPOINT.PUBLIC.USER}`).send({
 			username: "test",
 			password: "test",
 			name: "test",
@@ -55,7 +55,7 @@ describe(`POST ${ENDPOINT.PUBLIC.LOGIN}`, () => {
 	});
 
 	it("should be able to login", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
 			.send({
 				username: "test",
@@ -70,7 +70,7 @@ describe(`POST ${ENDPOINT.PUBLIC.LOGIN}`, () => {
 	});
 
 	it("should reject login user if username is wrong", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
 			.send({
 				username: "wrong",
@@ -83,7 +83,7 @@ describe(`POST ${ENDPOINT.PUBLIC.LOGIN}`, () => {
 	});
 
 	it("should reject login user if username is wrong", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.post(`${ENDPOINT.PUBLIC.LOGIN}`)
 			.send({
 				username: "test",
@@ -107,7 +107,7 @@ describe(`GET ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should be able to get user", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.get(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test");
 
@@ -118,7 +118,7 @@ describe(`GET ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should reject get user if token is invalid", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.get(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong");
 
@@ -139,7 +139,7 @@ describe(`PATCH ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should reject update user if user request is ivalid", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
@@ -153,7 +153,7 @@ describe(`PATCH ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should reject update user if token is wrong", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong")
 			.send({
@@ -167,7 +167,7 @@ describe(`PATCH ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should be able to update username", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
@@ -180,7 +180,7 @@ describe(`PATCH ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should be able to update password", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.patch(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test")
 			.send({
@@ -206,7 +206,7 @@ describe(`DELETE ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should to be able logout", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.delete(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "test");
 
@@ -219,7 +219,7 @@ describe(`DELETE ${ENDPOINT.USER}`, () => {
 	});
 
 	it("should reject logout user if token is wrong", async () => {
-		const response = await supertest(web)
+		const response = await supertest(app)
 			.delete(`${ENDPOINT.USER}`)
 			.set("X-API-TOKEN", "wrong");
 
