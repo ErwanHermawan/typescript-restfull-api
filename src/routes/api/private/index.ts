@@ -22,3 +22,7 @@ apiRouter.delete(ENDPOINT.USER, UserController.logout);
 // Contact API
 apiRouter.post(ENDPOINT.CONTACTS, ContactController.create);
 apiRouter.get(`${ENDPOINT.CONTACTS}/:contactId(\\d+)`, ContactController.get);
+apiRouter.put(
+	`${ENDPOINT.CONTACTS}/:contactId(\\d+)`,
+	ContactController.update
+);

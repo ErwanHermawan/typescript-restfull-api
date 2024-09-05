@@ -98,3 +98,37 @@ describe(`GET ${ENDPOINT.CONTACTS}/:contactId`, () => {
 		expect(response.body.errors).toBeDefined();
 	});
 });
+
+// testing get contact
+describe(`PUT ${ENDPOINT.CONTACTS}/:contactId`, () => {
+	beforeEach(async () => {
+		await UserTest.create();
+		await ContactTest.create();
+	});
+
+	afterEach(async () => {
+		await ContactTest.deleteAll();
+		await UserTest.delete();
+	});
+
+	it("should be able update contact", async () => {
+		const contact = await ContactTest.get();
+		const response = await supertest(app)
+			.put(`${ENDPOINT.CONTACTS}/${contact.id}`)
+			.set("X-API-TOKEN", "test")
+			.send({
+				first_name: "test",
+				last_name: "test",
+				email: "test@gmail.com",
+				phone: "08999",
+			});
+
+		logger.debug(response.body);
+		expect(response.status).toBe(200);
+		expect(response.body.data.id).toBe(contact.id);
+		expect(response.body.data.first_name).toBe("test");
+		expect(response.body.data.last_name).toBe("test");
+		expect(response.body.data.email).toBe("test@gmail.com");
+		expect(response.body.data.phone).toBe("08999");
+	});
+});
