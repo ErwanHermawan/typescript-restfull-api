@@ -117,18 +117,35 @@ describe(`PUT ${ENDPOINT.CONTACTS}/:contactId`, () => {
 			.put(`${ENDPOINT.CONTACTS}/${contact.id}`)
 			.set("X-API-TOKEN", "test")
 			.send({
-				first_name: "test",
-				last_name: "test",
-				email: "test@gmail.com",
+				first_name: "John",
+				last_name: "Doe",
+				email: "john@gmail.com",
 				phone: "08999",
 			});
 
 		logger.debug(response.body);
 		expect(response.status).toBe(200);
 		expect(response.body.data.id).toBe(contact.id);
-		expect(response.body.data.first_name).toBe("test");
-		expect(response.body.data.last_name).toBe("test");
-		expect(response.body.data.email).toBe("test@gmail.com");
+		expect(response.body.data.first_name).toBe("John");
+		expect(response.body.data.last_name).toBe("Doe");
+		expect(response.body.data.email).toBe("john@gmail.com");
 		expect(response.body.data.phone).toBe("08999");
+	});
+
+	it("should reject update contact if request in invalid", async () => {
+		const contact = await ContactTest.get();
+		const response = await supertest(app)
+			.put(`${ENDPOINT.CONTACTS}/${contact.id}`)
+			.set("X-API-TOKEN", "test")
+			.send({
+				first_name: "",
+				last_name: "",
+				email: "",
+				phone: "",
+			});
+
+		logger.debug(response.body);
+		expect(response.status).toBe(400);
+		expect(response.body.errors).toBeDefined();
 	});
 });

@@ -45,7 +45,7 @@ export class ContactController {
 			const request: UpdateContactRequest = req.body as UpdateContactRequest;
 			request.id = Number(req.params.contactId);
 
-			const response = await ContactServive.create(req.user!, request);
+			const response = await ContactServive.update(req.user!, request);
 
 			res.status(200).json({
 				data: response,

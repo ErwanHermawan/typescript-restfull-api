@@ -11,7 +11,6 @@ export type ContactResponse = {
 
 // create contact request
 export type CreateContactRequest = {
-	id: number;
 	first_name: string;
 	last_name?: string;
 	email?: string;

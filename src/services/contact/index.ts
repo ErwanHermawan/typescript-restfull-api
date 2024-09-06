@@ -40,11 +40,12 @@ export class ContactServive {
 		return toConcatResponse(contact);
 	}
 
+	// check exsist contact
 	static async checkContactMustExsit(
 		username: string,
 		contactId: number
 	): Promise<Contact> {
-		const contact = await prismaClient.contact.findUnique({
+		const contact = await prismaClient.contact.findFirst({
 			where: {
 				id: contactId,
 				username: username,
@@ -75,6 +76,7 @@ export class ContactServive {
 			request
 		);
 
+		// check exsist contact
 		await this.checkContactMustExsit(user.username, request.id);
 
 		const contact = await prismaClient.contact.update({
