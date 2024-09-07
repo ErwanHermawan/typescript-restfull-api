@@ -26,3 +26,7 @@ apiRouter.put(
 	`${ENDPOINT.CONTACTS}/:contactId(\\d+)`,
 	ContactController.update
 );
+apiRouter.delete(
+	`${ENDPOINT.CONTACTS}/:contactId(\\d+)`,
+	ContactController.remove
+);

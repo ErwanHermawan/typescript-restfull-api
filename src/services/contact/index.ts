@@ -89,4 +89,18 @@ export class ContactServive {
 
 		return toConcatResponse(contact);
 	}
+
+	// service delete contact
+	static async remove(user: User, id: number): Promise<ContactResponse> {
+		await this.checkContactMustExsit(user.username, id);
+
+		const contact = await prismaClient.contact.delete({
+			where: {
+				id: id,
+				username: user.username,
+			},
+		});
+
+		return toConcatResponse(contact);
+	}
 }

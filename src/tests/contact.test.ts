@@ -99,7 +99,7 @@ describe(`GET ${ENDPOINT.CONTACTS}/:contactId`, () => {
 	});
 });
 
-// testing get contact
+// testing update contact
 describe(`PUT ${ENDPOINT.CONTACTS}/:contactId`, () => {
 	beforeEach(async () => {
 		await UserTest.create();
@@ -146,6 +146,41 @@ describe(`PUT ${ENDPOINT.CONTACTS}/:contactId`, () => {
 
 		logger.debug(response.body);
 		expect(response.status).toBe(400);
+		expect(response.body.errors).toBeDefined();
+	});
+});
+
+// testing delete contact
+describe(`DELETE ${ENDPOINT.CONTACTS}/:contactId`, () => {
+	beforeEach(async () => {
+		await UserTest.create();
+		await ContactTest.create();
+	});
+
+	afterEach(async () => {
+		await ContactTest.deleteAll();
+		await UserTest.delete();
+	});
+
+	it("should be able remove contact", async () => {
+		const contact = await ContactTest.get();
+		const response = await supertest(app)
+			.delete(`${ENDPOINT.CONTACTS}/${contact.id}`)
+			.set("X-API-TOKEN", "test");
+
+		logger.debug(response.body);
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBe("OK");
+	});
+
+	it("should reject remove contcat if contact is not found", async () => {
+		const contact = await ContactTest.get();
+		const response = await supertest(app)
+			.delete(`${ENDPOINT.CONTACTS}/${contact.id + 1}`)
+			.set("X-API-TOKEN", "test");
+
+		logger.debug(response.body);
+		expect(response.status).toBe(404);
 		expect(response.body.errors).toBeDefined();
 	});
 });
