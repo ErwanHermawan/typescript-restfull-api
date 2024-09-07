@@ -30,3 +30,4 @@ apiRouter.delete(
 	`${ENDPOINT.CONTACTS}/:contactId(\\d+)`,
 	ContactController.remove
 );
+apiRouter.get(`${ENDPOINT.CONTACTS}`, ContactController.search);

@@ -6,15 +6,16 @@ import { Contact, User } from "@prisma/client";
 import {
 	ContactResponse,
 	CreateContactRequest,
+	SearchContactRequest,
 	toConcatResponse,
 	UpdateContactRequest,
 } from "@models/contact";
+import { Pageable } from "@models/page";
 
 // -- validations
 import { ContactValidation } from "@validations/contact";
 import { Validation } from "@validations/index";
 import { ResponseError } from "@errors/response";
-import { UserValidation } from "@validations/user";
 
 export class ContactServive {
 	// service create contact
@@ -102,5 +103,79 @@ export class ContactServive {
 		});
 
 		return toConcatResponse(contact);
+	}
+
+	// service delete contact
+	static async search(
+		user: User,
+		request: SearchContactRequest
+	): Promise<Pageable<ContactResponse>> {
+		const searchRequest = Validation.validate(
+			ContactValidation.SEARCH,
+			request
+		);
+		const skip = (searchRequest.page - 1) * searchRequest.size;
+
+		const filters = [];
+		// check if name exists
+		if (searchRequest.name) {
+			filters.push({
+				OR: [
+					{
+						first_name: {
+							contains: searchRequest.name,
+						},
+					},
+					{
+						last_name: {
+							contains: searchRequest.name,
+						},
+					},
+				],
+			});
+		}
+
+		// check if email exists
+		if (searchRequest.email) {
+			filters.push({
+				email: {
+					contains: searchRequest.email,
+				},
+			});
+		}
+
+		// check if phone exists
+		if (searchRequest.phone) {
+			filters.push({
+				phone: {
+					contains: searchRequest.phone,
+				},
+			});
+		}
+
+		const contact = await prismaClient.contact.findMany({
+			where: {
+				username: user.username,
+				AND: filters,
+			},
+			take: searchRequest.size,
+			skip: skip,
+		});
+
+		const total = await prismaClient.contact.count({
+			where: {
+				username: user.username,
+				AND: filters,
+			},
+		});
+
+		return {
+			data: contact.map((contact) => toConcatResponse(contact)),
+			paging: {
+				current_page: searchRequest.page,
+				total_page: Math.ceil(total / searchRequest.size),
+				size: searchRequest.size,
+			},
+		};
 	}
 }

@@ -26,6 +26,15 @@ export type UpdateContactRequest = {
 	phone?: string;
 };
 
+// search contact request
+export type SearchContactRequest = {
+	name?: string;
+	phone?: string;
+	email?: string;
+	page: number;
+	size: number;
+};
+
 // conversion contact prisma to contact response
 export function toConcatResponse(contact: Contact): ContactResponse {
 	return {
